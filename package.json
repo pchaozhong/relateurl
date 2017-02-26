@@ -1,46 +1,61 @@
 {
   "name": "relateurl",
-  "description": "Minify URLs by converting them from absolute to relative.",
-  "version": "0.2.7",
+  "description": "Create a relative URL with minify options.",
+  "version": "1.0.0-alpha",
   "license": "MIT",
-  "homepage": "https://github.com/stevenvachon/relateurl",
-  "author": {
-    "name": "Steven Vachon",
-    "email": "contact@svachon.com",
-    "url": "http://www.svachon.com/"
-  },
-  "main": "lib",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/stevenvachon/relateurl.git"
-  },
-  "bugs": {
-    "url": "https://github.com/stevenvachon/relateurl/issues"
+  "author": "Steven Vachon <contact@svachon.com> (https://www.svachon.com/)",
+  "repository": "stevenvachon/relateurl",
+  "dependencies": {
+    "cloneurl": "^1.0.0",
+    "deep-freeze-node": "^1.1.2",
+    "evaluate-value": "^1.0.2",
+    "isurl": "^1.0.0",
+    "minurl": "stevenvachon/minurl",
+    "url-relation": "github:stevenvachon/url-relation"
   },
   "devDependencies": {
-    "browserify": "^13.0.1",
-    "chai": "^3.5.0",
-    "mocha": "^2.5.3",
-    "uglify-js": "^2.7.0"
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browserify": "^14.4.0",
+    "chai": "^4.0.2",
+    "coveralls": "^2.13.1",
+    "gzip-size-cli": "^2.0.0",
+    "incomplete-url": "^1.0.2",
+    "mocha": "^3.4.2",
+    "npm-watch": "~0.2.0",
+    "nyc": "^11.0.3",
+    "uglify-js": "^3.0.23",
+    "universal-url": "^1.0.0"
   },
   "engines": {
-    "node": ">= 0.10"
+    "node": ">= 6"
   },
   "scripts": {
-    "browserify": "browserify lib/ --standalone RelateUrl | uglifyjs --compress --mangle -o relateurl-browser.js",
-    "test": "mocha test/ --bail --reporter spec --check-leaks"
+    "ci": "npm run test && nyc report --reporter=text-lcov | coveralls",
+    "posttest": "nyc report --reporter=html && browserify index.js --global-transform [ babelify --presets [ es2015 ] ] --standalone relateURL | uglifyjs --compress --mangle | gzip-size",
+    "test": "nyc --reporter=text-summary mocha test/ --check-leaks --bail",
+    "watch": "npm-watch test"
+  },
+  "watch": {
+    "test": {
+      "inherit": true,
+      "patterns": [
+        "index.js",
+        "test/**/*.{js,json}"
+      ]
+    }
   },
   "files": [
-    "lib",
-    "license"
+    "index.js"
   ],
   "keywords": [
-    "uri",
-    "url",
+    "absolute",
     "minifier",
     "minify",
-    "lint",
+    "normalize",
     "relative",
-    "absolute"
+    "uri",
+    "url",
+    "whatwg"
   ]
 }
